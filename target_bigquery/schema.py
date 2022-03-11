@@ -1,6 +1,7 @@
 """
 the purpose of this module is to convert JSON schema to BigQuery schema.
 """
+import logging
 import re
 
 from target_bigquery.simplify_json_schema import BQ_DECIMAL_SCALE_MAX, BQ_BIGDECIMAL_SCALE_MAX, \
@@ -417,14 +418,18 @@ def format_record_to_schema(record, bq_schema):
                        "BIGDECIMAL": str
                        }
 
+    logging.CRITICAL("record")
+    logging.CRITICAL(record)
+
+    logging.CRITICAL(bq_schema)
+    logging.CRITICAL("bq_schema")
     if isinstance(record, list):
         new_record = []
         for r in record:
-            if isinstance(r, dict):
-                r = format_record_to_schema(r, bq_schema)
-                new_record.append(r)
-            else:
+            if not isinstance(r, dict):
                 raise Exception(f"unhandled instance of list object in record: {r}")
+            r = format_record_to_schema(r, bq_schema)
+            new_record.append(r)
         return new_record
     elif isinstance(record, dict):
         rc = record.copy()
@@ -440,5 +445,7 @@ def format_record_to_schema(record, bq_schema):
                 # mode: REPEATED, type: [any]
                 record[k] = [conversion_dict[bq_schema[k]["type"]](vi) for vi in v]
             else:
+                logging.CRITICAL("PYK")
+                logging.CRITICAL(rc)
                 record[k] = conversion_dict[bq_schema[k]["type"]](v)
     return record
