@@ -415,7 +415,8 @@ def format_record_to_schema(record, bq_schema):
                        "BOOLEAN": bool,
                        "GEOGRAPHY": str,
                        "DECIMAL": str,
-                       "BIGDECIMAL": str
+                       "BIGDECIMAL": str,
+                       "RECORD": str
                        }
 
     logging.critical("record")
