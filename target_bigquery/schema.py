@@ -418,11 +418,11 @@ def format_record_to_schema(record, bq_schema):
                        "BIGDECIMAL": str
                        }
 
-    logging.CRITICAL("record")
-    logging.CRITICAL(record)
+    logging.critical("record")
+    logging.critical(record)
 
-    logging.CRITICAL(bq_schema)
-    logging.CRITICAL("bq_schema")
+    logging.critical("bq_schema")
+    logging.critical(bq_schema)
     if isinstance(record, list):
         new_record = []
         for r in record:
@@ -445,7 +445,7 @@ def format_record_to_schema(record, bq_schema):
                 # mode: REPEATED, type: [any]
                 record[k] = [conversion_dict[bq_schema[k]["type"]](vi) for vi in v]
             else:
-                logging.CRITICAL("PYK")
-                logging.CRITICAL(rc)
+                logging.critical("PYK")
+                logging.critical(rc)
                 record[k] = conversion_dict[bq_schema[k]["type"]](v)
     return record
